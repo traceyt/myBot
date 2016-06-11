@@ -37,7 +37,10 @@ function qotd(session) {
     });
 
     client.get("/qod.json?category=inspire", function(err, req, res, jsonObj) {
-        assert.ifError(err); // connection error
+        if (err) {
+            session.send(err.restCode + ' ' + err.message);
+            return;
+        }
 
         var today = new Date().toDateString();
         console.log(res.body);
