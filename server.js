@@ -47,9 +47,11 @@ function qotd(session) {
 
             res.on('end', function() {
                 var jbody = JSON.parse(res.body);
+                var today = new Date().toString();
                 console.log(res.body);
                 session.send(jbody.contents.quotes[0].quote + "\n" + jbody.contents.quotes[0].author + "\n\n" +
-                "Famous Quotes. Quotes.net. STANDS4 LLC, 2016. Web." + Date.now() + "<http://www.quotes.net/>." );
+                "Famous Quotes. Quotes.net. STANDS4 LLC, 2016. Web." + today + "<http://www.quotes.net/>." );
+
             });
         });
 
