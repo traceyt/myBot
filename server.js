@@ -48,7 +48,8 @@ function qotd(session) {
             res.on('end', function() {
                 var jbody = JSON.parse(res.body);
                 console.log(res.body);
-                session.send(jbody.contents.quotes[0].quote + "\n\n" + jbody.contents.quotes[0].author);
+                session.send(jbody.contents.quotes[0].quote + "\n" + jbody.contents.quotes[0].author + "\n\n" +
+                "Famous Quotes. Quotes.net. STANDS4 LLC, 2016. Web. 11 Jun 2016. <http://www.quotes.net/>." );
             });
         });
 
