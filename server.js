@@ -15,6 +15,8 @@ server.use(restify.bodyParser());
 // log the url posted and then post the message
 server.use(function(req, res, next) {
     console.log(req.method + ' ' + req.url + ' ' + req.username + ' ' + req.body.text);
+    console.log(req);
+    console.log(res);
     next();
 });
 
