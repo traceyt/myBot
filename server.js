@@ -1,6 +1,7 @@
 var botAppID = process.env.BOT_APP_ID || "appID";
 var botAppSecret = process.env.BOT_APP_SECRET || 'appSecret';
 
+var assert = require("assert");
 var http = require("http")
 var restify = require("restify");
 var builder = require("botbuilder");
@@ -36,7 +37,8 @@ function qotd(session) {
     });
 
     client.get("/qod.json?category=inspire", function(err, req, res, jsonObj) {
-        //assert.ifError(err); // connection error
+        assert.ifError(err); // connection error
+
         var today = new Date().toDateString();
         console.log(res.body);
                 
