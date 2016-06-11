@@ -9,7 +9,8 @@ var bot = new builder.BotConnectorBot({ appID: botAppID, appSecret: botAppSecret
 bot.add("/", hello);
 
 var server = restify.createServer({ name:"Bot Server" });
-
+server.use(restify.authorizationParser());
+server.use(restify.bodyParser());
 
 // log the url posted and then post the message
 server.use(function(req, res, next) {
