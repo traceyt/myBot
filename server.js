@@ -18,7 +18,6 @@ server.use(restify.bodyParser());
 server.use(function(req, res, next) {
     console.log(req.method + ' ' + req.url + ' ' + req.username + ' ' + req.body.text);
     console.log(req.params);
-    senderName = req.params.from.name;
     next();
 });
 
@@ -35,6 +34,8 @@ function hello(session) {
 }
 
 function qotd(session) {
+    var senderName = session.message.from;
+
     var client = restify.createJsonClient( {
         url: "http://quotes.rest",
         version: "*"
@@ -42,15 +43,17 @@ function qotd(session) {
 
     client.get("/qod.json?category=inspire", function(err, req, res, jsonObj) {
         if (err) {
-            session.send("Sorry " + senderName + "\n" + err.restCode + ' ' + err.message);
+            session.send("Unfortunately " + senderName.name + ", there seems to be a problem. The error code is:" + err.restCode + ' ' + err.message);
             return;
         }
 
         var today = new Date().toDateString();
         console.log(res.body);
+
+        var m = 'Hello ' + senderName.name + '! \n Here is your quote of the day \n' + 
+            jsonObj.contents.quotes[0].quote + "\n" + jsonObj.contents.quotes[0].author + "\n" +
+            "Famous Quotes. Quotes.net. STANDS4 LLC, 2016. Web. " + today + "\n" + " <http://www.quotes.net/>."
                 
-        session.send( 'Hello ' + senderName + '! \n Here is your quote of the day \n' + 
-            jsonObj.contents.quotes[0].quote + "\n" + jbody.contents.quotes[0].author + "\n\n" +
-            "Famous Quotes. Quotes.net. STANDS4 LLC, 2016. Web. " + today + "\n" + " <http://www.quotes.net/>." );
+        session.send( m );
     });
 }
