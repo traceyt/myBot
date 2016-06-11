@@ -1,5 +1,6 @@
-var botAppID = process.env.appID || "appID";
-var botAppSecret = process.env.appSecret || 'appSecret';
+var botAppID = process.env.BOT_APP_ID || "appID";
+var botAppSecret = process.env.BOT_APP_SECRET || 'appSecret';
+
 
 var restify = require("restify");
 var builder = require("botbuilder");
@@ -16,7 +17,7 @@ server.use(function(req, res, next) {
     next();
 });
 
-server.post('api/messages', bot.verifyBotFramework(), bot.listen());
+server.post('api/messages', bot.verifyBotFramework({ appId: botAppID, appSecret: botAppSecret}), bot.listen());
 
 server.listen(process.env.port || 3978, function() { 
     console.log('api listening at %s', server.url)
