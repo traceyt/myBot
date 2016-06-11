@@ -6,6 +6,8 @@ var http = require("http")
 var restify = require("restify");
 var builder = require("botbuilder");
 
+var senderName = '';
+
 var bot = new builder.BotConnectorBot({ appID: botAppID, appSecret: botAppSecret });
 bot.add("/", hello);
 
@@ -16,8 +18,7 @@ server.use(restify.bodyParser());
 server.use(function(req, res, next) {
     console.log(req.method + ' ' + req.url + ' ' + req.username + ' ' + req.body.text);
     console.log(req.params);
-    // console.log(req);
-    // console.log(res);
+    senderName = req.params.from.name;
     next();
 });
 
@@ -41,14 +42,15 @@ function qotd(session) {
 
     client.get("/qod.json?category=inspire", function(err, req, res, jsonObj) {
         if (err) {
-            session.send(err.restCode + ' ' + err.message);
+            session.send("Sorry " + senderName + "\n" + err.restCode + ' ' + err.message);
             return;
         }
 
         var today = new Date().toDateString();
         console.log(res.body);
                 
-        session.send(jsonObj.contents.quotes[0].quote + "\n" + jbody.contents.quotes[0].author + "\n\n" +
-       "Famous Quotes. Quotes.net. STANDS4 LLC, 2016. Web. " + today + "\n" + " <http://www.quotes.net/>." );
+        session.send( 'Hello ' + senderName + '! \n' + 
+            jsonObj.contents.quotes[0].quote + "\n" + jbody.contents.quotes[0].author + "\n\n" +
+            "Famous Quotes. Quotes.net. STANDS4 LLC, 2016. Web. " + today + "\n" + " <http://www.quotes.net/>." );
     });
 }
