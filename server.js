@@ -49,7 +49,7 @@ function qotd(session) {
         var today = new Date().toDateString();
         console.log(res.body);
                 
-        session.send( 'Hello ' + senderName + '! \n' + 
+        session.send( 'Hello ' + senderName + '! \n Here is your quote of the day \n' + 
             jsonObj.contents.quotes[0].quote + "\n" + jbody.contents.quotes[0].author + "\n\n" +
             "Famous Quotes. Quotes.net. STANDS4 LLC, 2016. Web. " + today + "\n" + " <http://www.quotes.net/>." );
     });
