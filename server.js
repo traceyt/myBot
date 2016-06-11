@@ -30,31 +30,17 @@ function hello(session) {
 }
 
 function qotd(session) {
-    var client = restify.createClient( {
-        url: "http://quotes.rest"
+    var client = restify.createJsonClient( {
+        url: "http://quotes.rest",
+        version: "*"
     });
 
-    client.get("/qod.json?category=inspire", function(err, req) {
+    client.get("/qod.json?category=inspire", function(err, req, res, jsonObj) {
         //assert.ifError(err); // connection error
-        req.on('result', function(err, res) {
-            //assert.ifError(err); // http status code >= 400
-
-            res.body = "";
-            res.setEncoding("utf8");
-            res.on('data', function(chunk) {
-                res.body += chunk;
-            });
-
-            res.on('end', function() {
-                var jbody = JSON.parse(res.body);
-                var today = new Date().toDateString();
-                console.log(res.body);
-                session.send(jbody.contents.quotes[0].quote + "\n" + jbody.contents.quotes[0].author + "\n\n" +
-                "Famous Quotes. Quotes.net. STANDS4 LLC, 2016. Web. " + today + "\n" + "<http://www.quotes.net/>." );
-
-            });
-        });
-
+        var today = new Date().toDateString();
+        console.log(res.body);
+                
+        session.send(jsonObj.contents.quotes[0].quote + "\n" + jbody.contents.quotes[0].author + "\n\n" +
+       "Famous Quotes. Quotes.net. STANDS4 LLC, 2016. Web. " + today + "\n" + " <http://www.quotes.net/>." );
     });
 }
-
